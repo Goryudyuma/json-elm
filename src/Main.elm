@@ -23,8 +23,8 @@ init =
 type JSON =
     Object (List {key: String, value: JSON})
     | Array (List JSON)
-    | Int
-    | String
+    | Int Int
+    | String String
 
 parseJSON : String -> JSON
 parseJSON s = Object []

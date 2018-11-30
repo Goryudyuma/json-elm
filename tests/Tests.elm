@@ -17,10 +17,20 @@ all =
                     test "空のJSONをパースする" <|
                         \_ ->
                             let
-                                expected = Object []
                                 actual = parseJSON "{}"
+                                expected = Object []
                             in
 
                             Expect.equal expected actual
+                        ,
+                    test """"a"をパースできる"""<|
+                        \_ ->
+                            let
+                                actual = parseJSON """\"a\""""
+                                expected = String "a"
+                            in
+
+                            Expect.equal expected actual
+
                 ]
         ]
