@@ -2,6 +2,7 @@ module Tests exposing (..)
 
 import Test exposing (..)
 import Expect
+import Main exposing(parseJSON, JSON(..))
 
 
 -- Check out http://package.elm-lang.org/packages/elm-community/elm-test/latest to learn more about testing in Elm!
@@ -10,13 +11,16 @@ import Expect
 all : Test
 all =
     describe "A Test Suite"
-        [ test "Addition" <|
-            \_ ->
-                Expect.equal 10 (3 + 7)
-        , test "String.left" <|
-            \_ ->
-                Expect.equal "a" (String.left 1 "abcdefg")
-        , test "This test should fail" <|
-            \_ ->
-                Expect.fail "failed as expected!"
+        [
+            describe "JSONのパースをしたい"
+                [
+                    test "空のJSONをパースする" <|
+                        \_ ->
+                            let
+                                expected = Object []
+                                actual = parseJSON "{}"
+                            in
+
+                            Expect.equal expected actual
+                ]
         ]

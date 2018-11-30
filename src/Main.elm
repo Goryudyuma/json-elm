@@ -18,6 +18,18 @@ init =
 
 
 
+---- PARSER ----
+
+type JSON =
+    Object (List {key: String, value: JSON})
+    | Array (List JSON)
+    | Int
+    | String
+
+parseJSON : String -> JSON
+parseJSON s = Object []
+
+
 ---- UPDATE ----
 
 
