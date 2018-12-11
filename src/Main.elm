@@ -3,7 +3,7 @@ module Main exposing (Model, Msg(..), ValueType(..), init, main, update, view)
 import Browser
 import Dict exposing (Dict)
 import Html exposing (Html, br, div, h1, img, input, pre, text, textarea)
-import Html.Attributes exposing (src, style)
+import Html.Attributes exposing (attribute, src, style)
 import Html.Events exposing (onInput)
 import Json.Decode as D
 import Json.Encode as E
@@ -31,7 +31,7 @@ type ValueType
     | Int Int
     | Float Float
     | Bool Bool
-    | Null (Maybe Bool)
+    | Null
     | Object (List ( String, ValueType ))
     | List (List ValueType)
 
@@ -57,8 +57,8 @@ valueTypeDecoder =
                 D.keyValuePairs valueTypeDecoder
             )
             |> D.andThen (\object -> D.succeed (Object object))
-        , D.nullable D.bool
-            |> D.andThen (\_ -> D.succeed (Null Nothing))
+        , D.nullable D.value
+            |> D.andThen (\_ -> D.succeed Null)
         ]
 
 
@@ -80,7 +80,7 @@ valueTypeEncode vt =
         Object object ->
             E.dict identity valueTypeEncode (Dict.fromList object)
 
-        Null null ->
+        Null ->
             E.null
 
         List list ->
@@ -128,8 +128,16 @@ view model =
     div []
         [ textarea [ onInput Change ] []
         , br [] []
-        , pre [ style "background-color" "#d44" ] [ text decoded.err ]
-        , pre [] [ text encoded ]
+        , pre
+            [ style "background-color" "#d44"
+            , style "color" "#000000"
+            ]
+            [ text decoded.err ]
+        , pre
+            [ style "background-color" "#44d"
+            , style "color" "#ffffff"
+            ]
+            [ text encoded ]
         ]
 
 
